@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Денги</string>
+    <string name="hint_title">название</string>
+    <string name="hint_price">цена</string>
+    <string name="btn_add">добавить</string>
+    <string name="hello_world">ПРИВЕТ МИР!</string>
+</resources>
