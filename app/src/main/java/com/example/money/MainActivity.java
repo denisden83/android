@@ -1,52 +1,53 @@
 package com.example.money;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.example.money.items.Item;
-import com.example.money.items.ItemsAdapter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ItemsAdapter itemsAdapter = new ItemsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.rv_items);
-        recyclerView.setAdapter(itemsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
-                LinearLayoutManager.VERTICAL, false));
+        ViewPager2 pages = (ViewPager2) findViewById(R.id.pages);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
 
-        generateData();
+        pages.setAdapter(new MainPagerAdapter(this));
 
-        findViewById(R.id.welcome_sign).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newActivity = new Intent(getApplicationContext(), AddItemActivity.class);
-                startActivity(newActivity);
-            }
-        });
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabs, pages,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(getResources().getStringArray(R.array.main_page_titles)[position]);
+                    }
+                });
+        tabLayoutMediator.attach();
     }
 
-    private void generateData() {
-        List<Item> itemList = new ArrayList<>();
+    private class MainPagerAdapter extends FragmentStateAdapter {
+        public MainPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
 
-        itemList.add(new Item("Salary", "10000$"));
-        itemList.add(new Item("Taxes", "2000$"));
-        itemList.add(new Item("PS4", "1500$"));
-        itemList.add(new Item("Food", "3500$"));
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return BudgetFragment.newInstance(position);
+        }
 
-        itemsAdapter.setData(itemList);
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 }

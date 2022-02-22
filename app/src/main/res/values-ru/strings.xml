@@ -5,4 +5,9 @@
     <string name="hint_price">цена</string>
     <string name="btn_add">добавить</string>
     <string name="hello_world">ПРИВЕТ МИР!</string>
+    <array name="main_page_titles">
+        <item>расходы</item>
+        <item>доходы</item>
+        <item>баланс</item>
+    </array>
 </resources>
